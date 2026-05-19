@@ -89,17 +89,17 @@ def save_pdf(client_id, filename, content_bytes):
 # ══════════════════════════════════════════════════════════════════════
 st.markdown("""
 <style>
-/* ── BASE ── */
-.stApp { background: #F0F4FF !important; }
+/* ── BASE — Rose Garden ── */
+.stApp { background: #FDF6F0 !important; }
 #MainMenu, footer, header { visibility: hidden; }
 .block-container { padding: 2rem 2.5rem !important; max-width: 1400px !important; }
 
 /* ── SIDEBAR ── */
-[data-testid="stSidebar"] { background: #1A1F3C !important; border-right: 1px solid #2D3561; }
+[data-testid="stSidebar"] { background: #4A1942 !important; border-right: 1px solid #6B2154; }
 [data-testid="stSidebar"], [data-testid="stSidebar"] p,
 [data-testid="stSidebar"] span, [data-testid="stSidebar"] div,
-[data-testid="stSidebar"] label { color: #D4DCF5 !important; }
-[data-testid="stSidebar"] hr { border-color: #2D3561 !important; margin: 10px 0 !important; }
+[data-testid="stSidebar"] label { color: #F5D6E8 !important; }
+[data-testid="stSidebar"] hr { border-color: #6B2154 !important; margin: 10px 0 !important; }
 [data-testid="stSidebar"] .stButton > button {
   border-radius: 8px !important; font-size: 13px !important; font-weight: 500 !important;
   text-align: left !important; padding: 9px 14px !important; margin: 2px 0 !important;
@@ -108,58 +108,58 @@ st.markdown("""
 [data-testid="stSidebar"] .stButton > button[kind="secondary"],
 [data-testid="stSidebar"] .stButton > button[kind="secondary"] p,
 [data-testid="stSidebar"] .stButton > button[kind="secondary"] span {
-  background: rgba(255,255,255,0.05) !important; color: #D4DCF5 !important;
+  background: rgba(255,255,255,0.07) !important; color: #F5D6E8 !important;
 }
 [data-testid="stSidebar"] .stButton > button[kind="secondary"]:hover {
-  background: #252C52 !important; color: #FFFFFF !important;
+  background: rgba(255,255,255,0.15) !important; color: #FFFFFF !important;
 }
 [data-testid="stSidebar"] .stButton > button[kind="primary"],
 [data-testid="stSidebar"] .stButton > button[kind="primary"] p,
 [data-testid="stSidebar"] .stButton > button[kind="primary"] span {
-  background: #4F6EF7 !important; color: #FFFFFF !important;
+  background: #D4547A !important; color: #FFFFFF !important;
 }
 
 /* ── ALL LABELS & INPUTS ── */
 [data-testid="stWidgetLabel"] p,
-[data-testid="stWidgetLabel"] label { color: #374151 !important; font-size:12px !important; font-weight:600 !important; }
+[data-testid="stWidgetLabel"] label { color: #3B0764 !important; font-size:12px !important; font-weight:600 !important; }
 .stTextInput input, .stNumberInput input, .stTextArea textarea {
-  background:#FFFFFF !important; color:#1A1F3C !important;
-  border:1px solid #CBD5E1 !important; border-radius:8px !important;
+  background:#FFFFFF !important; color:#3B0764 !important;
+  border:1px solid #F2C4CE !important; border-radius:8px !important;
 }
 .stTextInput label, .stNumberInput label, .stTextArea label,
 .stSelectbox label, .stDateInput label, .stMultiSelect label, .stFileUploader label {
-  color:#374151 !important; font-size:12px !important; font-weight:600 !important;
+  color:#3B0764 !important; font-size:12px !important; font-weight:600 !important;
 }
 .stSelectbox [data-baseweb="select"] > div,
 .stMultiSelect [data-baseweb="select"] > div {
-  background:#FFFFFF !important; color:#1A1F3C !important;
-  border:1px solid #CBD5E1 !important; border-radius:8px !important;
+  background:#FFFFFF !important; color:#3B0764 !important;
+  border:1px solid #F2C4CE !important; border-radius:8px !important;
 }
 .stDateInput [data-baseweb="input"] > div {
-  background:#FFFFFF !important; color:#1A1F3C !important; border-radius:8px !important;
+  background:#FFFFFF !important; color:#3B0764 !important; border-radius:8px !important;
 }
 .stRadio div[role="radiogroup"] label,
 .stRadio div[role="radiogroup"] label span,
-.stRadio div[role="radiogroup"] label p { color:#1A1F3C !important; font-size:13px !important; }
-.stCheckbox label span, .stCheckbox label p { color:#1A1F3C !important; font-size:13px !important; }
-[data-testid="stMetricLabel"] p { color:#8896B3 !important; font-size:11px !important; font-weight:600 !important; text-transform:uppercase; letter-spacing:.05em; }
-[data-testid="stMetricValue"] { color:#1A1F3C !important; }
+.stRadio div[role="radiogroup"] label p { color:#3B0764 !important; font-size:13px !important; }
+.stCheckbox label span, .stCheckbox label p { color:#3B0764 !important; font-size:13px !important; }
+[data-testid="stMetricLabel"] p { color:#9D8090 !important; font-size:11px !important; font-weight:600 !important; text-transform:uppercase; letter-spacing:.05em; }
+[data-testid="stMetricValue"] { color:#3B0764 !important; }
 [data-testid="stForm"] {
-  background:#FFFFFF !important; border:1px solid #E4EAF8 !important;
+  background:#FFFFFF !important; border:1px solid #F2C4CE !important;
   border-radius:12px !important; padding:16px !important;
 }
-[data-testid="stForm"] h5 { color:#4F6EF7 !important; font-size:13px !important; }
-[data-testid="stFileUploader"] { background:#F8FAFF !important; border:1px dashed #CBD5E1 !important; border-radius:8px !important; }
-.stTabs [data-baseweb="tab"] { color:#374151 !important; font-weight:600 !important; }
-.stTabs [data-baseweb="tab"][aria-selected="true"] { color:#4F6EF7 !important; }
+[data-testid="stForm"] h5 { color:#D4547A !important; font-size:13px !important; }
+[data-testid="stFileUploader"] { background:#FDF6F0 !important; border:1px dashed #F2C4CE !important; border-radius:8px !important; }
+.stTabs [data-baseweb="tab"] { color:#3B0764 !important; font-weight:600 !important; }
+.stTabs [data-baseweb="tab"][aria-selected="true"] { color:#D4547A !important; }
 
 /* ── DATAFRAME ── */
-[data-testid="stDataFrame"] { border-radius:10px !important; border:1px solid #E4EAF8 !important; overflow:hidden !important; }
+[data-testid="stDataFrame"] { border-radius:10px !important; border:1px solid #F2C4CE !important; overflow:hidden !important; }
 [data-testid="stDataFrame"] > div { background:#FFFFFF !important; }
 
 /* ── CONTAINER WITH BORDER ── */
 [data-testid="stVerticalBlockBorderWrapper"] {
-  background:#FFFFFF !important; border-radius:14px !important; border:1px solid #E4EAF8 !important;
+  background:#FFFFFF !important; border-radius:14px !important; border:1px solid #F2C4CE !important;
 }
 
 /* ══════════════════════════════════════════════════════
@@ -169,7 +169,7 @@ st.markdown("""
 [data-testid="stVerticalBlockBorderWrapper"] [data-testid="stButton"] > button {
   background: transparent !important;
   border: 1px solid transparent !important;
-  color: #374151 !important;
+  color: #3B0764 !important;
   justify-content: flex-start !important;
   text-align: left !important;
   padding: 7px 10px !important;
@@ -183,12 +183,12 @@ st.markdown("""
   width: 100% !important;
 }
 [data-testid="stVerticalBlockBorderWrapper"] [data-testid="stButton"] > button:hover {
-  background: rgba(79,110,247,0.06) !important;
+  background: #FDE8EE !important;
 }
 [data-testid="stVerticalBlockBorderWrapper"] [data-testid="stButton"] > button[kind="primary"] {
-  background: #EEF2FF !important;
-  border: 1px solid #C7D2FE !important;
-  color: #4F6EF7 !important;
+  background: #FDE8EE !important;
+  border: 1px solid #F9A8D4 !important;
+  color: #9B1A5E !important;
   font-weight: 700 !important;
 }
 
@@ -211,18 +211,23 @@ st.markdown("""
 }
 
 /* ── KPI CARDS ── */
-.kpi-card { background:#fff; border:1px solid #E4EAF8; border-radius:14px; padding:18px 20px; position:relative; overflow:hidden; }
+.kpi-card { background:#fff; border:1px solid #F2C4CE; border-radius:14px; padding:18px 20px; position:relative; overflow:hidden; }
 .kpi-card::before { content:""; position:absolute; top:0; left:0; right:0; height:4px; border-radius:14px 14px 0 0; }
-.kpi-card.blue::before   { background:#4F6EF7; }
-.kpi-card.green::before  { background:#10B981; }
+.kpi-card.rose::before   { background:#D4547A; }
+.kpi-card.plum::before   { background:#4A1942; }
+.kpi-card.amber::before  { background:#F59E0B; }
+.kpi-card.teal::before   { background:#0D9488; }
+/* Legacy color names kept for other pages */
+.kpi-card.blue::before   { background:#D4547A; }
+.kpi-card.green::before  { background:#0D9488; }
 .kpi-card.orange::before { background:#F59E0B; }
-.kpi-card.purple::before { background:#8B5CF6; }
+.kpi-card.purple::before { background:#4A1942; }
 .kpi-icon  { font-size:20px; margin-bottom:6px; display:block; }
-.kpi-label { font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:.07em; color:#8896B3; }
-.kpi-value { font-size:24px; font-weight:700; color:#1A1F3C; margin-top:2px; }
-.kpi-sub   { font-size:11px; color:#A0AECE; margin-top:3px; }
-.section-hdr { font-size:11px; font-weight:700; color:#4F6EF7; letter-spacing:.08em; text-transform:uppercase; border-bottom:2px solid #E4EAF8; padding-bottom:6px; margin:24px 0 14px; }
-.flag-amber { background:#FFFBEB; border-left:3px solid #F59E0B; padding:7px 14px; border-radius:0 8px 8px 0; margin:4px 0; font-size:13px; color:#78350F; }
+.kpi-label { font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:.07em; color:#9D8090; }
+.kpi-value { font-size:24px; font-weight:700; color:#3B0764; margin-top:2px; }
+.kpi-sub   { font-size:11px; color:#C4A0B0; margin-top:3px; }
+.section-hdr { font-size:11px; font-weight:700; color:#D4547A; letter-spacing:.08em; text-transform:uppercase; border-bottom:2px solid #F2C4CE; padding-bottom:6px; margin:24px 0 14px; }
+.flag-amber { background:#FFF7ED; border-left:3px solid #F59E0B; padding:7px 14px; border-radius:0 8px 8px 0; margin:4px 0; font-size:13px; color:#78350F; }
 .flag-red   { background:#FEF2F2; border-left:3px solid #EF4444; padding:7px 14px; border-radius:0 8px 8px 0; margin:4px 0; font-size:13px; color:#7F1D1D; }
 .flag-green { background:#F0FDF4; border-left:3px solid #10B981; padding:7px 14px; border-radius:0 8px 8px 0; margin:4px 0; font-size:13px; color:#14532D; }
 </style>
@@ -232,9 +237,9 @@ st.markdown("""
 # DETAIL CARD CSS  (injected per-page that needs it)
 # ══════════════════════════════════════════════════════════════════════
 _DET_CSS = """<style>
-/* ── Filter panel helpers ── */
-.fpanel-hdr { font-size:11px; font-weight:800; letter-spacing:.10em; color:#374151; text-transform:uppercase; margin-bottom:12px; }
-.fpanel-sec { font-size:10px; font-weight:700; letter-spacing:.07em; color:#9CA3AF; text-transform:uppercase; margin:14px 0 4px; }
+/* ── Filter panel helpers — Rose Garden ── */
+.fpanel-hdr { font-size:11px; font-weight:800; letter-spacing:.10em; color:#3B0764; text-transform:uppercase; margin-bottom:12px; }
+.fpanel-sec { font-size:10px; font-weight:700; letter-spacing:.07em; color:#C4A0B0; text-transform:uppercase; margin:14px 0 4px; }
 
 /* ── Icon badges for list rows ── */
 .pol-badge {
@@ -243,58 +248,58 @@ _DET_CSS = """<style>
   font-size:16px; flex-shrink:0; margin-top:3px;
 }
 .badge-warn  { background:#FFF7ED; border:1.5px solid #FED7AA; }
-.badge-quote { background:#EDE9FE; border:1.5px solid #DDD6FE; }
+.badge-quote { background:#FDE8EE; border:1.5px solid #F9A8D4; }
 .badge-res   { background:#DCFCE7; border:1.5px solid #BBF7D0; }
-.badge-umb   { background:#EEF2FF; border:1.5px solid #C7D2FE; }
+.badge-umb   { background:#F3E8FF; border:1.5px solid #E9D5FF; }
 .badge-exp   { background:#FEF2F2; border:1.5px solid #FECACA; }
-.badge-comm  { background:#EFF6FF; border:1.5px solid #BFDBFE; }
+.badge-comm  { background:#FDF6F0; border:1.5px solid #F2C4CE; }
 .badge-auto  { background:#FFFBEB; border:1.5px solid #FDE68A; }
 .badge-prop  { background:#F0FDF4; border:1.5px solid #BBF7D0; }
 
 /* ── Detail card ── */
-.det-card { background:#fff; border:1px solid #E4EAF8; border-radius:14px; padding:24px 28px; margin-top:16px; }
+.det-card { background:#fff; border:1px solid #F2C4CE; border-radius:14px; padding:24px 28px; margin-top:16px; }
 .det-hdr { display:flex; align-items:flex-start; justify-content:space-between; margin-bottom:16px; gap:12px; }
-.det-title { font-size:18px; font-weight:700; color:#1A1F3C; line-height:1.2; }
-.det-meta { font-size:12px; color:#8896B3; margin-top:4px; line-height:1.5; }
-.det-divider { border:none; border-top:1px solid #E4EAF8; margin:14px 0; }
+.det-title { font-size:18px; font-weight:700; color:#3B0764; line-height:1.2; }
+.det-meta { font-size:12px; color:#9D8090; margin-top:4px; line-height:1.5; }
+.det-divider { border:none; border-top:1px solid #F2C4CE; margin:14px 0; }
 .det-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(145px,1fr)); gap:14px 18px; margin-bottom:14px; }
-.det-field .dk { font-size:10px; text-transform:uppercase; letter-spacing:.06em; color:#8896B3; font-weight:700; margin-bottom:3px; }
-.det-field .dv { font-size:13px; color:#1A1F3C; font-weight:600; line-height:1.3; }
+.det-field .dk { font-size:10px; text-transform:uppercase; letter-spacing:.06em; color:#9D8090; font-weight:700; margin-bottom:3px; }
+.det-field .dv { font-size:13px; color:#3B0764; font-weight:600; line-height:1.3; }
 /* Status pills */
 .status-pill { font-size:11px; font-weight:700; padding:4px 14px; border-radius:20px; white-space:nowrap; display:inline-block; }
 .pill-active  { background:#DCFCE7; color:#166534; }
-.pill-quote   { background:#EDE9FE; color:#4C1D95; }
+.pill-quote   { background:#FDE8EE; color:#9B1A5E; }
 .pill-expired { background:#FEF2F2; color:#991B1B; }
-.pill-auto    { background:#FFF7ED; color:#9A3412; }
-.pill-prop    { background:#EEF2FF; color:#3730A3; }
+.pill-auto    { background:#FFFBEB; color:#9A3412; }
+.pill-prop    { background:#F3E8FF; color:#6B21A8; }
 /* Tags */
 .tag-row { display:flex; flex-wrap:wrap; gap:6px; margin-top:10px; }
-.tag { display:inline-block; font-size:11px; font-weight:600; padding:3px 10px; border-radius:20px; background:#EEF2FF; color:#4338CA; }
+.tag { display:inline-block; font-size:11px; font-weight:600; padding:3px 10px; border-radius:20px; background:#FDE8EE; color:#9B1A5E; }
 .tag.urgent { background:#FEF2F2; color:#991B1B; }
 .tag.amber  { background:#FFFBEB; color:#92400E; }
 .tag.green  { background:#F0FDF4; color:#166534; }
-.tag.purple { background:#EDE9FE; color:#4C1D95; }
+.tag.purple { background:#F3E8FF; color:#6B21A8; }
 .tag.gray   { background:#F1F5F9; color:#475569; }
 /* Alert banners */
 .alert-banner { display:flex; align-items:flex-start; gap:10px; padding:10px 16px; border-radius:10px; margin-top:12px; font-size:13px; }
 .alert-red   { background:#FEF2F2; border-left:4px solid #EF4444; color:#991B1B; }
 .alert-amber { background:#FFFBEB; border-left:4px solid #F59E0B; color:#92400E; }
-.alert-blue  { background:#EFF6FF; border-left:4px solid #3B82F6; color:#1E40AF; }
+.alert-blue  { background:#FDE8EE; border-left:4px solid #D4547A; color:#9B1A5E; }
 .alert-green { background:#F0FDF4; border-left:4px solid #10B981; color:#166534; }
 .alert-icon { font-size:15px; flex-shrink:0; margin-top:1px; }
 .alert-text { line-height:1.5; }
 .alert-text strong { display:block; font-weight:700; margin-bottom:1px; }
 /* Notes */
-.notes-box { background:#FAFBFF; border:1px solid #E4EAF8; border-radius:8px; padding:10px 14px; margin-top:10px; font-size:12px; color:#374151; line-height:1.6; }
-.notes-lbl { font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:.06em; color:#8896B3; margin-bottom:4px; }
+.notes-box { background:#FDF6F0; border:1px solid #F2C4CE; border-radius:8px; padding:10px 14px; margin-top:10px; font-size:12px; color:#3B0764; line-height:1.6; }
+.notes-lbl { font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:.06em; color:#9D8090; margin-bottom:4px; }
 /* Follow-up chip */
 .followup-chip { display:inline-flex; align-items:center; gap:6px; background:#FFF7ED; border:1px solid #FED7AA; border-radius:8px; padding:5px 10px; font-size:12px; color:#92400E; font-weight:600; margin-top:10px; }
 /* Select hint */
-.sel-hint { text-align:center; padding:32px 20px; color:#8896B3; font-size:13px; background:#FAFBFF; border-radius:12px; margin-top:16px; border:1.5px dashed #CBD5E1; }
+.sel-hint { text-align:center; padding:32px 20px; color:#9D8090; font-size:13px; background:#FDF6F0; border-radius:12px; margin-top:16px; border:1.5px dashed #F2C4CE; }
 .sel-hint-icon { font-size:28px; margin-bottom:8px; }
 /* Page titles */
-.pg-title { font-size:22px; font-weight:700; color:#1A1F3C; margin-bottom:2px; }
-.pg-sub   { font-size:13px; color:#8896B3; margin-bottom:20px; }
+.pg-title { font-size:22px; font-weight:700; color:#3B0764; margin-bottom:2px; }
+.pg-sub   { font-size:13px; color:#9D8090; margin-bottom:20px; }
 </style>"""
 
 # ══════════════════════════════════════════════════════════════════════
@@ -388,89 +393,53 @@ def _filter_btn(label, key, active):
                      type="primary" if active else "secondary")
 
 # ══════════════════════════════════════════════════════════════════════
-# DASHBOARD
+# DASHBOARD  — Rose Garden redesign
 # ══════════════════════════════════════════════════════════════════════
 def page_dashboard(data):
     policies   = data.get("policies",   [])
     auto       = data.get("auto_policies", [])
     properties = data.get("properties", [])
-    name       = data.get("portfolio_name","Portfolio")
+    name       = data.get("portfolio_name", "Portfolio")
+    today      = date.today()
 
-    col_t, col_s = st.columns([1.4, 2])
-    with col_t:
-        st.markdown(f"""
-        <div style="font-size:22px;font-weight:700;color:#1A1F3C;">📊 Dashboard</div>
-        <div style="font-size:13px;color:#8896B3;">{name} · {date.today().strftime('%B %d, %Y')}</div>
-        """, unsafe_allow_html=True)
-    with col_s:
-        st.markdown("<div style='height:6px'></div>", unsafe_allow_html=True)
-        query = st.text_input("s", placeholder="🔍  Search by policy #, carrier, address, Prop ID…",
-                              label_visibility="collapsed", key="gsearch")
-
-    if query and query.strip():
-        q = query.lower().strip()
-        results = []
-        for prop in properties:
-            fields = " ".join(str(v) for v in [prop.get("prop_id",""),prop.get("nickname",""),
-                prop.get("address",""),prop.get("city",""),prop.get("owner","")]).lower()
-            if q in fields:
-                results.append(("🏠 Property","background:#EEF2FF;color:#4338CA",
-                    prop.get("nickname") or prop.get("address","—"),
-                    f"{prop.get('prop_id','')} · {prop.get('address','')} · {prop.get('units','?')} units"))
-        seen_p = set()
-        for pol in policies:
-            pno = pol.get("policy_number","")
-            if pno in seen_p: continue
-            seen_p.add(pno)
-            fields = " ".join(str(v) for v in [pno,pol.get("carrier",""),
-                pol.get("policy_type",""),pol.get("prop_id",""),pol.get("status","")]).lower()
-            if q in fields:
-                exp = parse_date(pol.get("expiration_date"))
-                results.append(("📋 Policy","background:#F0FDF4;color:#166534",
-                    f"{pno} — {pol.get('carrier','—')}",
-                    f"{pol.get('policy_type','—')} · Expires {exp.strftime('%b %d, %Y') if exp else '—'} · ${pol.get('premium',0):,.0f} · {pol.get('status','—')}"))
-        for a in auto:
-            fields = " ".join(str(v) for v in [a.get("policy_number",""),a.get("carrier",""),
-                a.get("insured",""),a.get("vehicles","")]).lower()
-            if q in fields:
-                exp = parse_date(a.get("expiration_date"))
-                results.append(("🚗 Auto","background:#FFF7ED;color:#9A3412",
-                    f"{a.get('policy_number','—')} — {a.get('carrier','—')}",
-                    f"Auto · {a.get('insured','—')} · Expires {exp.strftime('%b %d, %Y') if exp else '—'} · ${a.get('premium',0):,.0f}"))
-        if not results:
-            st.info(f"No results for \"{query}\"")
-        else:
-            st.markdown(f"<div style='font-size:13px;color:#8896B3;margin-bottom:8px;'><b style='color:#1A1F3C;'>{len(results)}</b> result{'s' if len(results)!=1 else ''} for <b style='color:#4F6EF7;'>\"{query}\"</b></div>", unsafe_allow_html=True)
-            for badge, bstyle, title, sub in results:
-                st.markdown(f"""<div style="background:#fff;border:1px solid #E4EAF8;border-radius:10px;padding:12px 16px;margin:5px 0;">
-                  <span style="font-size:11px;font-weight:600;padding:2px 10px;border-radius:20px;{bstyle}">{badge}</span>
-                  <div style="font-size:14px;font-weight:600;color:#1A1F3C;margin-top:5px;">{title}</div>
-                  <div style="font-size:12px;color:#6B7A99;margin-top:2px;">{sub}</div>
-                </div>""", unsafe_allow_html=True)
-        st.markdown("<hr style='border-color:#E4EAF8;margin:16px 0'>", unsafe_allow_html=True)
+    # ── Header ──────────────────────────────────────────────────────
+    st.markdown(f"""
+    <div style="display:flex;align-items:baseline;gap:14px;margin-bottom:4px;">
+      <span style="font-size:24px;font-weight:800;color:#3B0764;">📊 Dashboard</span>
+      <span style="font-size:13px;color:#C4A0B0;">{name}</span>
+    </div>
+    <div style="font-size:12px;color:#C4A0B0;margin-bottom:20px;">{today.strftime('%A, %B %d, %Y')}</div>
+    """, unsafe_allow_html=True)
 
     if not policies and not properties:
         st.info("No data yet. Go to **Upload / Add** to add your first policy.")
         return
 
-    seen = set(); comm=res=umb=quote=0; comm_cnt=res_cnt=quote_cnt=0
+    # ── Deduplicate policies by policy_number ──────────────────────
+    seen = set(); bound_pols = []; quote_pols = []
     for p in policies:
-        pno=p.get("policy_number",""); prem=p.get("premium") or 0
+        pno = p.get("policy_number","")
         if pno in seen: continue
         seen.add(pno)
-        if p.get("status","Active")=="Quote": quote+=prem; quote_cnt+=1
-        elif is_umbrella(p): umb+=prem
-        elif is_residential(p): res+=prem; res_cnt+=1
-        else: comm+=prem; comm_cnt+=1
-    auto_total = sum((a.get("premium") or 0) for a in auto)
-    total_bound = comm+umb+res+auto_total
+        if (p.get("status") or "Active") == "Quote":
+            quote_pols.append(p)
+        else:
+            bound_pols.append(p)
 
-    c1,c2,c3,c4 = st.columns(4)
-    for col,color,icon,label,value,sub in [
-        (c1,"blue","🏢","Commercial",f"${comm+umb:,.0f}",f"{comm_cnt} policies · {len(properties)} props"),
-        (c2,"green","🏡","Residential",f"${res:,.0f}",f"{res_cnt} policies"),
-        (c3,"orange","🚗","Auto",f"${auto_total:,.0f}",f"{len(auto)} policies"),
-        (c4,"purple","📄","Quote / Pending",f"${quote:,.0f}",f"{quote_cnt} quotes"),
+    all_bound = bound_pols + auto
+    total_premium  = sum((p.get("premium") or 0) for p in all_bound)
+    quote_total    = sum((p.get("premium") or 0) for p in quote_pols)
+
+    exp30  = [p for p in all_bound if 0 <= (days_to(p.get("expiration_date")) or 999) < 30]
+    exp90  = [p for p in all_bound if 0 <= (days_to(p.get("expiration_date")) or 999) < 90]
+
+    # ── 4 KPI Cards ─────────────────────────────────────────────────
+    c1, c2, c3, c4 = st.columns(4)
+    for col, color, icon, label, value, sub in [
+        (c1, "rose",  "💰", "Total Premium",  f"${total_premium:,.0f}", f"{len(bound_pols)} bound + {len(auto)} auto"),
+        (c2, "amber", "🔴", "Expires < 30d",  str(len(exp30)),          f"{len(exp30)} polic{'y' if len(exp30)==1 else 'ies'} critical"),
+        (c3, "plum",  "🟡", "Expires < 90d",  str(len(exp90)),          f"${sum((p.get('premium') or 0) for p in exp90):,.0f} at risk"),
+        (c4, "teal",  "🏠", "Properties",     str(len(properties)),     f"{sum((p.get('units') or 0) for p in properties if isinstance(p.get('units'), int))} total units"),
     ]:
         col.markdown(f"""<div class="kpi-card {color}">
           <span class="kpi-icon">{icon}</span>
@@ -478,91 +447,271 @@ def page_dashboard(data):
           <div class="kpi-value">{value}</div>
           <div class="kpi-sub">{sub}</div>
         </div>""", unsafe_allow_html=True)
-    st.markdown("<div style='height:16px'></div>", unsafe_allow_html=True)
+    st.markdown("<div style='height:20px'></div>", unsafe_allow_html=True)
 
-    today = date.today()
-    all_pols = list({p["policy_number"]:p for p in policies}.values()) + auto
-    col_tl, col_pie = st.columns([2.2,1])
-    with col_tl:
-        st.markdown('<div class="section-hdr">Renewal Timeline — next 18 months</div>', unsafe_allow_html=True)
-        tl = []
-        for p in all_pols:
-            exp=parse_date(p.get("expiration_date"))
-            if not exp: continue
-            days=(exp-today).days
-            if days<-30 or days>548: continue
-            color="#EF4444" if days<0 else "#F59E0B" if days<60 else "#4F6EF7" if days<180 else "#10B981"
-            tl.append({"Policy":p.get("policy_number","—"),"Expires":exp.strftime("%b %d, %Y"),
-                       "Days":days,"Premium":p.get("premium") or 0,"_c":color})
-        if tl:
-            df=pd.DataFrame(tl).sort_values("Days"); fig=go.Figure()
-            for _,row in df.iterrows():
-                fig.add_trace(go.Bar(x=[row["Days"]],y=[row["Policy"]],orientation="h",
-                    marker_color=row["_c"],marker_line_width=0,
-                    text=row["Expires"],textposition="outside",textfont=dict(size=10),
-                    hovertemplate=f"<b>{row['Policy']}</b><br>Expires: {row['Expires']}<br>Premium: ${row['Premium']:,.0f}<extra></extra>",
-                    showlegend=False))
-            fig.update_layout(xaxis_title="Days from today",
-                margin=dict(l=10,r=90,t=10,b=30),height=max(220,len(df)*34),
-                plot_bgcolor="#FAFBFF",paper_bgcolor="rgba(0,0,0,0)",
-                xaxis=dict(gridcolor="#EEF2FF",zerolinecolor="#CBD5E1"),
-                yaxis=dict(autorange="reversed"),
-                font=dict(family="Arial,sans-serif",size=11,color="#1A1F3C"))
-            fig.add_vline(x=0,line_color="#CBD5E1",line_dash="dot")
-            fig.add_vline(x=90,line_color="#F59E0B",line_dash="dash",
-                annotation_text="90d",annotation_font_size=10,annotation_position="top right")
-            st.plotly_chart(fig,use_container_width=True,config={"displayModeBar":False})
+    # ── Mid section: Left column (renewals + actions) / Right (properties table) ──
+    col_left, col_right = st.columns([1.1, 1])
+
+    with col_left:
+        # — Upcoming Renewals ----------------------------------------
+        st.markdown('<div class="section-hdr">⏰ Upcoming Renewals</div>', unsafe_allow_html=True)
+        renewals = sorted(
+            [p for p in all_bound if (days_to(p.get("expiration_date")) or 999) >= 0
+             and (days_to(p.get("expiration_date")) or 999) < 120],
+            key=lambda p: days_to(p.get("expiration_date")) or 999
+        )
+        if renewals:
+            for p in renewals[:6]:
+                d   = days_to(p.get("expiration_date")) or 0
+                exp = parse_date(p.get("expiration_date"))
+                dot = "🔴" if d < 30 else "🟡" if d < 60 else "🟢"
+                bg  = "#FEF2F2" if d < 30 else "#FFFBEB" if d < 60 else "#F0FDF4"
+                bd  = "#FECACA" if d < 30 else "#FDE68A" if d < 60 else "#BBF7D0"
+                st.markdown(f"""
+                <div style="background:{bg};border:1px solid {bd};border-radius:10px;
+                  padding:10px 14px;margin:4px 0;display:flex;align-items:center;gap:12px;">
+                  <span style="font-size:18px;">{dot}</span>
+                  <div style="flex:1;min-width:0;">
+                    <div style="font-size:13px;font-weight:700;color:#3B0764;
+                      white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">
+                      {p.get('policy_number','—')} · {p.get('carrier','—')}
+                    </div>
+                    <div style="font-size:11px;color:#9D8090;">
+                      {(p.get('policy_type') or '—')[:34]} · ${p.get('premium',0):,.0f}
+                    </div>
+                  </div>
+                  <div style="text-align:right;flex-shrink:0;">
+                    <div style="font-size:13px;font-weight:800;color:#3B0764;">{d}d</div>
+                    <div style="font-size:10px;color:#C4A0B0;">{exp.strftime('%b %d') if exp else '—'}</div>
+                  </div>
+                </div>""", unsafe_allow_html=True)
         else:
-            st.markdown('<div class="flag-green">✅ No renewals in next 18 months.</div>', unsafe_allow_html=True)
-    with col_pie:
-        st.markdown('<div class="section-hdr">Premium Mix</div>', unsafe_allow_html=True)
-        slices=[(l,v,c) for l,v,c in [("Commercial",comm+umb,"#4F6EF7"),
-            ("Residential",res,"#10B981"),("Auto",auto_total,"#F59E0B"),("Quote",quote,"#8B5CF6")] if v>0]
-        if slices:
-            labels,values,colors=zip(*slices)
-            fig2=go.Figure(go.Pie(labels=labels,values=values,hole=0.58,
-                marker_colors=list(colors),textinfo="label+percent",
-                textfont=dict(size=11),hovertemplate="%{label}: $%{value:,.0f}<extra></extra>"))
-            fig2.update_layout(
-                annotations=[dict(text=f"<b>${total_bound:,.0f}</b>",x=0.5,y=0.5,
-                    font_size=13,font_color="#1A1F3C",showarrow=False)],
-                showlegend=True,legend=dict(orientation="h",x=0,y=-0.15,font_size=10),
-                margin=dict(l=0,r=0,t=10,b=20),height=290,paper_bgcolor="rgba(0,0,0,0)")
-            st.plotly_chart(fig2,use_container_width=True,config={"displayModeBar":False})
+            st.markdown('<div class="flag-green">✅ No renewals in the next 120 days.</div>',
+                        unsafe_allow_html=True)
 
-    expiring=sorted([p for p in all_pols if 0<=(days_to(p.get("expiration_date")) or 999)<90],
-        key=lambda p: days_to(p.get("expiration_date")) or 999)
-    st.markdown('<div class="section-hdr">⚠️ Expiring Within 90 Days</div>', unsafe_allow_html=True)
-    if expiring:
-        rows=[]
-        for p in expiring:
-            d=days_to(p.get("expiration_date")); dt=parse_date(p.get("expiration_date"))
-            rows.append({" ":"🔴" if d<30 else "🟡","Policy #":p.get("policy_number","—"),
-                "Carrier":p.get("carrier","—"),"Type":(p.get("policy_type") or "—")[:32],
-                "Expires":dt.strftime("%m/%d/%Y") if dt else "—",
-                "Days Left":d,"Premium":f"${p.get('premium',0):,.0f}"})
-        st.dataframe(pd.DataFrame(rows),use_container_width=True,hide_index=True,
-            column_config={"Days Left":st.column_config.NumberColumn(format="%d days")})
-    else:
-        st.markdown('<div class="flag-green">✅ No policies expiring within 90 days.</div>', unsafe_allow_html=True)
+        st.markdown("<div style='height:6px'></div>", unsafe_allow_html=True)
 
-    flags=[]
-    for p in policies:
-        if "required" in (p.get("inspection") or "").lower():
-            flags.append(("red",f"Inspection required — {p.get('policy_number')} ({p.get('carrier','')})"))
-        if (p.get("status") or "")=="Quote":
-            flags.append(("amber",f"Unbound quote — {p.get('policy_number')} · ${p.get('premium',0):,.0f}"))
-    for prop in properties:
-        if not prop.get("units") or prop.get("units") in (0,None,"Not Found"):
-            flags.append(("amber",f"Unit count missing — {prop.get('nickname') or prop.get('address','?')}"))
-    st.markdown('<div class="section-hdr">🚩 Action Items</div>', unsafe_allow_html=True)
-    if flags:
-        for sev,msg in flags[:12]:
-            css="flag-red" if sev=="red" else "flag-amber"
-            ico="🔴" if sev=="red" else "🟡"
-            st.markdown(f'<div class="{css}">{ico} {msg}</div>', unsafe_allow_html=True)
-    else:
-        st.markdown('<div class="flag-green">✅ No outstanding action items.</div>', unsafe_allow_html=True)
+        # — Action Items ---------------------------------------------
+        st.markdown('<div class="section-hdr">🚩 Action Items</div>', unsafe_allow_html=True)
+        flags = []
+        for p in policies:
+            if "required" in (p.get("inspection") or "").lower():
+                flags.append(("red", f"Inspection required — {p.get('policy_number')} ({p.get('carrier','')})"))
+            if (p.get("status") or "") == "Quote":
+                flags.append(("amber", f"Unbound quote — {p.get('policy_number')} · ${p.get('premium',0):,.0f}"))
+            notes = (p.get("notes") or "").lower()
+            if "habitability" in notes or "exclusion" in notes:
+                flags.append(("red", f"Coverage exclusion noted — {p.get('policy_number')} ({p.get('carrier','')})"))
+        for prop in properties:
+            if not prop.get("units") or prop.get("units") in (0, None, "Not Found"):
+                flags.append(("amber", f"Unit count missing — {prop.get('nickname') or prop.get('address','?')}"))
+        if flags:
+            for sev, msg in flags[:8]:
+                css = "flag-red" if sev == "red" else "flag-amber"
+                ico = "🔴" if sev == "red" else "🟡"
+                st.markdown(f'<div class="{css}">{ico} {msg}</div>', unsafe_allow_html=True)
+        else:
+            st.markdown('<div class="flag-green">✅ No outstanding action items.</div>',
+                        unsafe_allow_html=True)
+
+    with col_right:
+        # — Properties Coverage Status --------------------------------
+        st.markdown('<div class="section-hdr">🏘️ Properties Coverage Status</div>', unsafe_allow_html=True)
+        # Build prop→policy map
+        pol_map = {}
+        for p in bound_pols:
+            pid = p.get("prop_id","")
+            if pid and pid not in pol_map:
+                pol_map[pid] = p
+        # Sort: uncovered first, then by expiry
+        def _prop_sort_key(prop):
+            pid  = prop.get("prop_id","")
+            pol  = pol_map.get(pid)
+            if not pol: return (0, 0)
+            d = days_to(pol.get("expiration_date"))
+            if d is None: return (1, 9999)
+            return (1, d)
+        props_sorted = sorted(properties, key=_prop_sort_key)
+        for prop in props_sorted[:12]:
+            pid  = prop.get("prop_id","")
+            pol  = pol_map.get(pid)
+            nick = prop.get("nickname") or prop.get("address","—")
+            if pol:
+                d   = days_to(pol.get("expiration_date"))
+                exp = parse_date(pol.get("expiration_date"))
+                if d is None:
+                    status_dot, status_txt, row_bg = "⚪","No date","#F9FAFB"
+                elif d < 0:
+                    status_dot, status_txt, row_bg = "🔴","Expired","#FEF2F2"
+                elif d < 30:
+                    status_dot, status_txt, row_bg = "🔴",f"{d}d","#FEF2F2"
+                elif d < 90:
+                    status_dot, status_txt, row_bg = "🟡",f"{d}d","#FFFBEB"
+                else:
+                    status_dot, status_txt, row_bg = "🟢",f"{d}d","#FFFFFF"
+                carrier_short = (pol.get("carrier") or "—")[:18]
+                exp_str = exp.strftime("%b %d, %Y") if exp else "—"
+            else:
+                status_dot, status_txt, row_bg = "⚫","No policy","#FDF6F0"
+                carrier_short, exp_str = "—","—"
+            st.markdown(f"""
+            <div style="background:{row_bg};border:1px solid #F2C4CE;border-radius:8px;
+              padding:8px 12px;margin:3px 0;display:flex;align-items:center;gap:10px;">
+              <span style="font-size:10px;font-weight:700;color:#C4A0B0;width:32px;flex-shrink:0;">{pid}</span>
+              <div style="flex:1;min-width:0;">
+                <div style="font-size:12px;font-weight:700;color:#3B0764;
+                  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">{nick}</div>
+                <div style="font-size:10px;color:#9D8090;">{carrier_short} · {exp_str}</div>
+              </div>
+              <span style="font-size:12px;">{status_dot}</span>
+              <span style="font-size:11px;font-weight:700;color:#3B0764;width:36px;text-align:right;flex-shrink:0;">{status_txt}</span>
+            </div>""", unsafe_allow_html=True)
+
+    st.markdown("<div style='height:4px'></div>", unsafe_allow_html=True)
+
+    # ── Bottom Analytics Row ─────────────────────────────────────────
+    col_a, col_b, col_c = st.columns(3)
+
+    # A — Carrier Concentration Donut --------------------------------
+    with col_a:
+        st.markdown('<div class="section-hdr">🏦 Carrier Concentration</div>', unsafe_allow_html=True)
+        carrier_totals: dict = {}
+        for p in bound_pols:
+            raw = (p.get("carrier") or "Unknown").strip()
+            low = raw.lower()
+            if any(x in low for x in ["farmers","truck insurance"]):
+                key = "Farmers"
+            elif any(x in low for x in ["honeycomb","specialty builders","accredited surety"]):
+                key = "Honeycomb"
+            elif any(x in low for x in ["zurich","steadfast","distinguished"]):
+                key = "Zurich"
+            elif any(x in low for x in ["bamboo","incline","accredited specialty"]):
+                key = "Bamboo"
+            elif any(x in low for x in ["state farm"]):
+                key = "State Farm"
+            elif any(x in low for x in ["allstate"]):
+                key = "Allstate"
+            elif any(x in low for x in ["progressive"]):
+                key = "Progressive"
+            else:
+                key = raw[:20]
+            carrier_totals[key] = carrier_totals.get(key, 0) + (p.get("premium") or 0)
+        for a in auto:
+            raw = (a.get("carrier") or "Unknown").strip()
+            low = raw.lower()
+            key = "Progressive" if "progressive" in low else \
+                  "State Farm"  if "state farm"  in low else \
+                  "Allstate"    if "allstate"     in low else raw[:20]
+            carrier_totals[key] = carrier_totals.get(key, 0) + (a.get("premium") or 0)
+        if carrier_totals:
+            sorted_c = sorted(carrier_totals.items(), key=lambda x: x[1], reverse=True)
+            if len(sorted_c) > 5:
+                top5 = sorted_c[:4]
+                other_val = sum(v for _, v in sorted_c[4:])
+                top5.append(("Other", other_val))
+            else:
+                top5 = sorted_c
+            clabels = [x[0] for x in top5]
+            cvals   = [x[1] for x in top5]
+            palette = ["#D4547A","#4A1942","#F59E0B","#0D9488","#C4A0B0"]
+            fig_c = go.Figure(go.Pie(
+                labels=clabels, values=cvals, hole=0.6,
+                marker_colors=palette[:len(clabels)],
+                textinfo="label+percent", textfont=dict(size=10),
+                hovertemplate="%{label}: $%{value:,.0f}<extra></extra>"
+            ))
+            fig_c.update_layout(
+                annotations=[dict(text=f"<b>${sum(cvals):,.0f}</b>", x=0.5, y=0.5,
+                    font_size=12, font_color="#3B0764", showarrow=False)],
+                showlegend=False,
+                margin=dict(l=0,r=0,t=4,b=4), height=220,
+                paper_bgcolor="rgba(0,0,0,0)"
+            )
+            st.plotly_chart(fig_c, use_container_width=True, config={"displayModeBar":False})
+
+    # B — Coverage Gaps Semaphore ------------------------------------
+    with col_b:
+        st.markdown('<div class="section-hdr">🛡️ Coverage Gaps</div>', unsafe_allow_html=True)
+        covered_ids   = {p.get("prop_id") for p in bound_pols if p.get("prop_id")}
+        all_prop_ids  = {p.get("prop_id") for p in properties if p.get("prop_id")}
+        uncovered     = all_prop_ids - covered_ids
+        exp_soon_ids  = {p.get("prop_id","") for p in bound_pols
+                         if 0 <= (days_to(p.get("expiration_date")) or 999) < 30}
+        inspections   = [p for p in policies if "required" in (p.get("inspection") or "").lower()]
+        quotes_pending= len(quote_pols)
+        gaps = [
+            ("🔴", "No active policy", len(uncovered),
+             f"{len(uncovered)} propert{'y' if len(uncovered)==1 else 'ies'} unbound",
+             "#FEF2F2","#FECACA"),
+            ("🟡", "Expiring < 30 days", len(exp_soon_ids),
+             f"{len(exp_soon_ids)} polic{'y' if len(exp_soon_ids)==1 else 'ies'} critical",
+             "#FFFBEB","#FDE68A"),
+            ("🟡", "Inspections required", len(inspections),
+             f"{len(inspections)} pending inspection{'s' if len(inspections)!=1 else ''}",
+             "#FFFBEB","#FDE68A"),
+            ("🔵", "Unbound quotes", quotes_pending,
+             f"{quotes_pending} quote{'s' if quotes_pending!=1 else ''} to bind",
+             "#FDE8EE","#F9A8D4"),
+            ("🟢", "Properties covered", len(covered_ids),
+             f"{len(covered_ids)} of {len(properties)} covered",
+             "#F0FDF4","#BBF7D0"),
+        ]
+        for dot, label, count, sub, bg, bd in gaps:
+            st.markdown(f"""
+            <div style="background:{bg};border:1px solid {bd};border-radius:10px;
+              padding:10px 14px;margin:4px 0;display:flex;align-items:center;gap:10px;">
+              <span style="font-size:20px;">{dot}</span>
+              <div style="flex:1;">
+                <div style="font-size:12px;font-weight:700;color:#3B0764;">{label}</div>
+                <div style="font-size:11px;color:#9D8090;">{sub}</div>
+              </div>
+              <span style="font-size:20px;font-weight:800;color:#3B0764;">{count}</span>
+            </div>""", unsafe_allow_html=True)
+
+    # C — Renewal Calendar (bar chart by month) ----------------------
+    with col_c:
+        st.markdown('<div class="section-hdr">📅 Renewal Calendar</div>', unsafe_allow_html=True)
+        from collections import defaultdict
+        month_buckets: dict = defaultdict(float)
+        for p in all_bound:
+            exp = parse_date(p.get("expiration_date"))
+            if not exp: continue
+            diff_months = (exp.year - today.year)*12 + (exp.month - today.month)
+            if 0 <= diff_months < 12:
+                label_m = exp.strftime("%b '%y")
+                month_buckets[label_m] += (p.get("premium") or 0)
+        if month_buckets:
+            # Build ordered list for next 12 months
+            months_ordered = []
+            vals_ordered   = []
+            colors_m       = []
+            for i in range(12):
+                import datetime as _dt
+                m = today.month + i
+                y = today.year + (m-1)//12
+                m = ((m-1) % 12) + 1
+                lbl = _dt.date(y, m, 1).strftime("%b '%y")
+                v = month_buckets.get(lbl, 0)
+                months_ordered.append(lbl)
+                vals_ordered.append(v)
+                colors_m.append("#EF4444" if i < 1 else "#F59E0B" if i < 3 else "#D4547A")
+            fig_bar = go.Figure(go.Bar(
+                x=months_ordered, y=vals_ordered,
+                marker_color=colors_m, marker_line_width=0,
+                hovertemplate="%{x}: $%{y:,.0f}<extra></extra>"
+            ))
+            fig_bar.update_layout(
+                margin=dict(l=0,r=0,t=4,b=30), height=220,
+                plot_bgcolor="#FDF6F0", paper_bgcolor="rgba(0,0,0,0)",
+                xaxis=dict(tickfont=dict(size=9), gridcolor="#F2C4CE"),
+                yaxis=dict(tickfont=dict(size=9), tickprefix="$",
+                           tickformat=",.0f", gridcolor="#F2C4CE"),
+                font=dict(family="Arial,sans-serif",size=10,color="#3B0764")
+            )
+            st.plotly_chart(fig_bar, use_container_width=True, config={"displayModeBar":False})
+        else:
+            st.markdown('<div class="flag-green">✅ No renewals in the next 12 months.</div>',
+                        unsafe_allow_html=True)
 
 
 # ══════════════════════════════════════════════════════════════════════
@@ -571,8 +720,8 @@ def page_dashboard(data):
 def _render_row(i, icon, badge_cls, title, subtitle, premium, d, sel_idx, btn_key):
     """Render a single list row. Returns True if this row was clicked."""
     is_sel = (sel_idx == i)
-    sel_bg  = "#EEF2FF" if is_sel else "transparent"
-    sel_bdr = "border-left:3px solid #4F6EF7;padding-left:8px;" if is_sel else "border-left:3px solid transparent;padding-left:8px;"
+    sel_bg  = "#FDE8EE" if is_sel else "transparent"
+    sel_bdr = "border-left:3px solid #D4547A;padding-left:8px;" if is_sel else "border-left:3px solid transparent;padding-left:8px;"
 
     c0, c1, c2, c3 = st.columns([0.45, 4.5, 1.6, 1.3])
     with c0:
@@ -594,7 +743,7 @@ def _render_row(i, icon, badge_cls, title, subtitle, premium, d, sel_idx, btn_ke
     with c3:
         clicked = st.button(_days_btn_label(d), key=btn_key, use_container_width=True)
     # Divider
-    st.markdown('<div style="height:1px;background:#F0F4FF;margin:0 0 2px;"></div>', unsafe_allow_html=True)
+    st.markdown('<div style="height:1px;background:#F2C4CE;margin:0 0 2px;opacity:0.5;"></div>', unsafe_allow_html=True)
     return clicked
 
 
@@ -659,7 +808,7 @@ def page_policies(data, save_fn):
 
             _filter_section("STATUS")
             for val, emoji in [("All","⚪"),("Active","🟢"),("Quote","🟣"),("Expired","🔴")]:
-                cnt = status_counts.get(val, total) if val != "All" else total
+                cnt = status_counts.get(val, 0) if val != "All" else total
                 if _filter_btn(f"{emoji}  {val}  ({cnt})", f"pfs_{val}", fs == val):
                     st.session_state["pf_s"] = val; st.rerun()
 
@@ -1026,7 +1175,7 @@ def page_properties(data, save_fn):
                     yr = p.get("year_built","")
                     lbl = f"Est. {yr}" if yr else "No yr"
                     clicked = st.button(lbl, key=f"prs_{i}", use_container_width=True)
-                st.markdown('<div style="height:1px;background:#F0F4FF;margin:0 0 2px;"></div>', unsafe_allow_html=True)
+                st.markdown('<div style="height:1px;background:#F2C4CE;margin:0 0 2px;opacity:0.5;"></div>', unsafe_allow_html=True)
 
                 if clicked:
                     st.session_state["sel_prop_idx"] = None if sel_idx == i else i
@@ -1572,29 +1721,141 @@ def page_export(data):
 
 
 # ══════════════════════════════════════════════════════════════════════
+# REPORTS
+# ══════════════════════════════════════════════════════════════════════
+def page_reports(data):
+    st.markdown('<div class="pg-title">📄 Reports</div>', unsafe_allow_html=True)
+    st.markdown('<div class="pg-sub">Generate executive-level summaries and PDF exports of your portfolio.</div>',
+                unsafe_allow_html=True)
+    portfolio  = data.get("portfolio_name","Portfolio")
+    policies   = data.get("policies",      [])
+    auto       = data.get("auto_policies", [])
+    properties = data.get("properties",    [])
+
+    # Dedup
+    seen = set(); bound_pols = []
+    for p in policies:
+        pno = p.get("policy_number","")
+        if pno in seen or (p.get("status") or "Active") == "Quote": continue
+        seen.add(pno); bound_pols.append(p)
+    all_bound  = bound_pols + auto
+    total_prem = sum((p.get("premium") or 0) for p in all_bound)
+    today      = date.today()
+
+    with st.container(border=True):
+        st.markdown("**📊 Executive Summary PDF**")
+        st.markdown(f"Portfolio: **{portfolio}** · {len(properties)} properties · "
+                    f"{len(bound_pols)} policies · {len(auto)} auto · "
+                    f"Total bound premium: **${total_prem:,.0f}**")
+        if st.button("🔄 Generate Executive PDF", type="primary", use_container_width=True):
+            with st.spinner("Compiling report…"):
+                try:
+                    import io
+                    lines = [
+                        f"InsureTrack — Executive Portfolio Summary",
+                        f"Portfolio: {portfolio}",
+                        f"Generated: {today.strftime('%B %d, %Y')}",
+                        "=" * 60,
+                        f"Properties:        {len(properties)}",
+                        f"Bound Policies:    {len(bound_pols)}",
+                        f"Auto Policies:     {len(auto)}",
+                        f"Total Bound Prem:  ${total_prem:,.0f}",
+                        "",
+                        "POLICIES EXPIRING < 90 DAYS",
+                        "-" * 40,
+                    ]
+                    exp90 = sorted(
+                        [p for p in all_bound if 0 <= (days_to(p.get("expiration_date")) or 999) < 90],
+                        key=lambda p: days_to(p.get("expiration_date")) or 999
+                    )
+                    for p in exp90:
+                        d   = days_to(p.get("expiration_date"))
+                        exp = parse_date(p.get("expiration_date"))
+                        lines.append(
+                            f"  {p.get('policy_number','—'):15s}  {p.get('carrier','—'):20s}  "
+                            f"Exp: {exp.strftime('%m/%d/%Y') if exp else '—'}  ({d}d)  "
+                            f"${p.get('premium',0):,.0f}"
+                        )
+                    if not exp90:
+                        lines.append("  None — all policies current.")
+                    lines += ["", "PROPERTIES", "-" * 40]
+                    for prop in properties:
+                        lines.append(
+                            f"  {prop.get('prop_id',''):6s}  {prop.get('nickname') or prop.get('address','—'):30s}  "
+                            f"{prop.get('city','')}, {prop.get('state','')}  "
+                            f"{prop.get('units','?')} units"
+                        )
+                    txt_content = "\n".join(lines)
+                    safe = portfolio.replace(" ","_").replace("/","-")
+                    fname = f"{safe}_Executive_Summary_{today}.txt"
+                    st.success("✅ Report ready!")
+                    st.download_button(
+                        f"⬇️ Download {fname}", txt_content.encode(), fname,
+                        "text/plain", use_container_width=True, type="primary"
+                    )
+                except Exception as e:
+                    st.error(f"Error generating report: {e}")
+
+    st.markdown("---")
+    with st.container(border=True):
+        st.markdown("**⬇️ Download Excel Workbook**")
+        st.markdown("Full data export with Properties, Policies, and Auto tabs.")
+        if st.button("Go to Download Excel →", use_container_width=True):
+            st.session_state.page = "export"; st.rerun()
+
+
+# ══════════════════════════════════════════════════════════════════════
+# SETTINGS
+# ══════════════════════════════════════════════════════════════════════
+def page_settings(data, save_fn):
+    st.markdown('<div class="pg-title">⚙️ Settings</div>', unsafe_allow_html=True)
+    st.markdown('<div class="pg-sub">Manage your portfolio name and account preferences.</div>',
+                unsafe_allow_html=True)
+    with st.container(border=True):
+        st.markdown("**Portfolio Name**")
+        new_name = st.text_input("Portfolio Name", value=data.get("portfolio_name",""),
+                                  key="sett_name")
+        if st.button("💾 Save", type="primary"):
+            data["portfolio_name"] = new_name.strip() or data.get("portfolio_name","")
+            save_fn(data)
+            st.success("✅ Portfolio name updated.")
+            st.rerun()
+    st.markdown("---")
+    st.markdown("**Account**")
+    st.markdown(f"Logged in as: **{st.session_state.get('client_name','')}**")
+    if st.button("↩  Sign Out", key="sett_signout"):
+        for k in ["logged_in","client_id","client_name","page"]:
+            st.session_state.pop(k, None)
+        st.rerun()
+
+
+# ══════════════════════════════════════════════════════════════════════
 # LOGIN
 # ══════════════════════════════════════════════════════════════════════
 def show_login():
     st.markdown("""
     <style>
-    .stApp { background: linear-gradient(160deg,#EEF2FF 0%,#EDE9FE 100%) !important; }
+    .stApp { background: linear-gradient(160deg,#FDF6F0 0%,#FDE8EE 100%) !important; }
     .stTextInput label, .stSelectbox label {
-      color: #4B5563 !important; font-size: 14px !important; font-weight: 500 !important; }
+      color: #3B0764 !important; font-size: 14px !important; font-weight: 500 !important; }
+    .stTextInput input { border-color: #F2C4CE !important; }
+    .stSelectbox [data-baseweb="select"] > div { border-color: #F2C4CE !important; }
     </style>""", unsafe_allow_html=True)
-    _,col,_ = st.columns([1.3,1,1.3])
+    _, col, _ = st.columns([1.3, 1, 1.3])
     with col:
         st.markdown("<div style='height:40px'></div>", unsafe_allow_html=True)
         st.markdown("""
-        <div style="background:white;border:1px solid #DDE3F8;border-radius:20px;
-          padding:36px 32px 28px;text-align:center;margin-bottom:16px;">
+        <div style="background:white;border:1px solid #F2C4CE;border-radius:20px;
+          padding:36px 32px 28px;text-align:center;margin-bottom:16px;
+          box-shadow:0 4px 24px rgba(212,84,122,0.08);">
           <div style="font-size:52px;line-height:1;">🛡️</div>
-          <div style="font-size:24px;font-weight:700;color:#1A1F3C;margin-top:10px;">InsureTrack</div>
-          <div style="font-size:13px;color:#8896B3;margin-top:4px;">Insurance Portfolio Management</div>
+          <div style="font-size:24px;font-weight:800;color:#3B0764;margin-top:10px;">InsureTrack</div>
+          <div style="font-size:13px;color:#C4A0B0;margin-top:4px;">Insurance Portfolio Management</div>
         </div>""", unsafe_allow_html=True)
         clients = load_clients()
         if not clients:
             st.error("No clients configured. Check clients.json."); return
-        client_names = {v["name"]:k for k,v in clients.items()}
+        client_names = {v["name"]: k for k, v in clients.items()}
         selected = st.selectbox("Select Portfolio", sorted(client_names.keys()))
         password = st.text_input("Password", type="password", placeholder="Enter your password")
         if st.button("Sign In →", use_container_width=True, type="primary"):
@@ -1606,7 +1867,7 @@ def show_login():
                 st.rerun()
             else:
                 st.error("Incorrect password.")
-        st.markdown("<div style='text-align:center;font-size:11px;color:#A0AECE;margin-top:12px;'>🔒 Secure · Multi-client</div>", unsafe_allow_html=True)
+        st.markdown("<div style='text-align:center;font-size:11px;color:#C4A0B0;margin-top:12px;'>🔒 Secure · Multi-client</div>", unsafe_allow_html=True)
 
 
 # ══════════════════════════════════════════════════════════════════════
@@ -1615,24 +1876,32 @@ def show_login():
 def show_sidebar():
     with st.sidebar:
         st.markdown(f"""
-        <div style="padding:6px 4px 4px;">
-          <div style="font-size:17px;font-weight:700;color:#FFFFFF;">🛡️ InsureTrack</div>
-          <div style="font-size:12px;color:#6B7A99;margin-top:3px;">{st.session_state.client_name}</div>
+        <div style="padding:6px 4px 8px;">
+          <div style="font-size:17px;font-weight:800;color:#FFFFFF;">🛡️ InsureTrack</div>
+          <div style="font-size:12px;color:#C4A0B0;margin-top:3px;">{st.session_state.client_name}</div>
         </div>""", unsafe_allow_html=True)
         st.markdown("---")
-        nav=[("📊","Dashboard","dashboard"),("🏠","Properties","properties"),
-             ("📋","Policies","policies"),("🚗","Auto","auto"),
-             ("📤","Upload / Add","upload"),("⬇️","Download Excel","export")]
-        for icon,label,pid in nav:
-            active=st.session_state.get("page")==pid
-            if st.button(f"{icon}  {label}",use_container_width=True,
-                         type="primary" if active else "secondary",key=f"nav_{pid}"):
-                st.session_state.page=pid; st.rerun()
+        nav = [
+            ("📊", "Dashboard",    "dashboard"),
+            ("🏠", "Properties",   "properties"),
+            ("📋", "Policies",     "policies"),
+            ("🚗", "Auto",         "auto"),
+            ("📤", "Upload / Add", "upload"),
+            ("📄", "Reports",      "reports"),
+            ("⬇️", "Download Excel","export"),
+            ("⚙️", "Settings",     "settings"),
+        ]
+        for icon, label, pid in nav:
+            active = st.session_state.get("page") == pid
+            if st.button(f"{icon}  {label}", use_container_width=True,
+                         type="primary" if active else "secondary", key=f"nav_{pid}"):
+                st.session_state.page = pid; st.rerun()
         st.markdown("---")
-        if st.button("↩  Sign Out",use_container_width=True,key="signout"):
-            for k in ["logged_in","client_id","client_name","page"]: st.session_state.pop(k,None)
+        if st.button("↩  Sign Out", use_container_width=True, key="signout"):
+            for k in ["logged_in","client_id","client_name","page"]:
+                st.session_state.pop(k, None)
             st.rerun()
-        st.markdown("<div style='font-size:11px;color:#4A5580;text-align:center;margin-top:12px;'>v3.0</div>", unsafe_allow_html=True)
+        st.markdown("<div style='font-size:11px;color:#6B2154;text-align:center;margin-top:12px;'>v4.0 · Rose Garden</div>", unsafe_allow_html=True)
 
 
 # ══════════════════════════════════════════════════════════════════════
@@ -1655,6 +1924,8 @@ def main():
     elif page == "auto":       page_auto(data, save)
     elif page == "upload":     page_upload(data, st.session_state.client_id, save)
     elif page == "export":     page_export(data)
+    elif page == "reports":    page_reports(data)
+    elif page == "settings":   page_settings(data, save)
 
 
 main()
