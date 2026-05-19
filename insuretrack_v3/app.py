@@ -150,6 +150,60 @@ st.markdown("""
 .flag-green { background:#F0FDF4; border-left:3px solid #10B981;
   padding:7px 14px; border-radius:0 8px 8px 0; margin:4px 0;
   font-size:13px; color:#14532D; }
+
+/* ── Force light theme on all inputs / forms ── */
+.stTextInput input,
+.stNumberInput input,
+.stTextArea textarea {
+  background-color: #FFFFFF !important;
+  color: #1A1F3C !important;
+  border: 1px solid #CBD5E1 !important;
+  border-radius: 8px !important;
+}
+.stTextInput label,
+.stNumberInput label,
+.stTextArea label,
+.stSelectbox label,
+.stDateInput label,
+.stMultiSelect label,
+.stFileUploader label {
+  color: #374151 !important;
+  font-size: 13px !important;
+  font-weight: 600 !important;
+}
+.stSelectbox [data-baseweb="select"] > div,
+.stDateInput [data-baseweb="input"] > div {
+  background-color: #FFFFFF !important;
+  color: #1A1F3C !important;
+  border: 1px solid #CBD5E1 !important;
+  border-radius: 8px !important;
+}
+/* Form container background */
+[data-testid="stForm"] {
+  background: #FFFFFF !important;
+  border: 1px solid #E4EAF8 !important;
+  border-radius: 12px !important;
+  padding: 16px !important;
+}
+/* Tab labels */
+.stTabs [data-baseweb="tab"] {
+  color: #374151 !important;
+  font-weight: 600 !important;
+}
+.stTabs [data-baseweb="tab"][aria-selected="true"] {
+  color: #4F6EF7 !important;
+}
+/* Markdown section headers inside forms */
+[data-testid="stForm"] h5 {
+  color: #4F6EF7 !important;
+  font-size: 13px !important;
+}
+/* File uploader */
+[data-testid="stFileUploader"] {
+  background: #F8FAFF !important;
+  border: 1px dashed #CBD5E1 !important;
+  border-radius: 8px !important;
+}
 </style>
 """, unsafe_allow_html=True)
 
@@ -393,7 +447,7 @@ def page_properties(data):
     def flag_missing(val):
         if val in ("Not Found", None, 0): return "background-color:#fef9c3;color:#92400e"
         return ""
-    styled = df.style.applymap(flag_missing, subset=["Units","Sq Ft"])
+    styled = df.style.map(flag_missing, subset=["Units","Sq Ft"])
     st.dataframe(styled, use_container_width=True, hide_index=True, height=560)
     st.caption(f"{len(rows)} properties · Yellow = data needs verification")
     st.markdown("---")
@@ -454,7 +508,7 @@ def page_policies(data):
             if val<30: return "color:#ef4444;font-weight:700"
             if val<90: return "color:#f59e0b;font-weight:600"
         return ""
-    styled=(df.style.applymap(style_status,subset=["Status"]).applymap(style_days,subset=["Days Left"])
+    styled=(df.style.map(style_status,subset=["Status"]).map(style_days,subset=["Days Left"])
         .format({"Premium":lambda v:f"${v:,.0f}" if v else "—","Bldg Limit":lambda v:f"${v:,.0f}" if v else "—"}))
     st.dataframe(styled,use_container_width=True,hide_index=True,height=520)
 
@@ -493,7 +547,7 @@ def page_auto(data):
             if val<30: return "color:#ef4444;font-weight:700"
             if val<90: return "color:#f59e0b;font-weight:600"
         return ""
-    styled=df.style.applymap(sd,subset=["Days Left"]).format({"Premium":lambda v:f"${v:,.2f}" if v else "—"})
+    styled=df.style.map(sd,subset=["Days Left"]).format({"Premium":lambda v:f"${v:,.2f}" if v else "—"})
     st.dataframe(styled,use_container_width=True,hide_index=True)
     total=sum((a.get("premium") or 0) for a in auto)
     st.markdown(f"**{len(auto)} policies** · Total as issued: **${total:,.2f}**")
