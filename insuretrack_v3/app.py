@@ -228,6 +228,39 @@ def is_residential(p):
     t = (p.get("policy_type") or "").lower()
     return any(x in t for x in ["ho-3","ho-6","homeowner","condo","cea","earthquake","rental"])
 
+# Split-pane detail card CSS (injected by each page that uses it)
+_SPLIT_CSS = """<style>
+.det-card{background:#fff;border:1px solid #E4EAF8;border-radius:12px;padding:20px 24px;margin-top:14px}
+.det-hdr{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:14px;gap:12px}
+.det-title{font-size:15px;font-weight:700;color:#1A1F3C}
+.det-meta{font-size:12px;color:#8896B3;margin-top:3px}
+.det-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:10px 14px;margin-bottom:12px}
+.det-field .dk{font-size:10px;text-transform:uppercase;letter-spacing:.06em;color:#8896B3;font-weight:700;margin-bottom:2px}
+.det-field .dv{font-size:13px;color:#1A1F3C;font-weight:600}
+.det-note{background:#FFFBEB;border-left:3px solid #F59E0B;padding:7px 12px;border-radius:0 7px 7px 0;font-size:12px;color:#78350F;margin-top:8px}
+.det-note.red{background:#FEF2F2;border-left-color:#EF4444;color:#7F1D1D}
+.det-note.green{background:#F0FDF4;border-left-color:#10B981;color:#14532D}
+.status-pill{font-size:11px;font-weight:700;padding:4px 12px;border-radius:20px;white-space:nowrap;display:inline-block}
+.pill-active{background:#E2EFDA;color:#166534}
+.pill-quote{background:#EDE9FE;color:#4C1D95}
+.pill-expired{background:#FEF2F2;color:#991B1B}
+.pill-auto{background:#FFF7ED;color:#9A3412}
+.sel-hint{text-align:center;padding:20px;color:#8896B3;font-size:12px;background:#F8FAFF;border-radius:10px;margin-top:12px;border:1px dashed #E4EAF8}
+</style>"""
+
+def _dc(d):
+    """Days color — red if urgent/expired, amber if <90, gray if ok."""
+    if d is None or d < 0: return "#EF4444"
+    if d < 30: return "#EF4444"
+    if d < 90: return "#D97706"
+    return "#6B7A99"
+
+def _dl(d):
+    """Days label."""
+    if d is None: return "—"
+    if d < 0: return f"Expired {abs(d)}d ago"
+    return f"{d}d left"
+
 # ══════════════════════════════════════════════════════════════════════
 # DASHBOARD
 # ══════════════════════════════════════════════════════════════════════
@@ -423,40 +456,104 @@ def page_dashboard(data):
 # ══════════════════════════════════════════════════════════════════════
 def page_properties(data):
     props = data.get("properties",[])
-    st.markdown('<div style="font-size:22px;font-weight:700;color:#1A1F3C;margin-bottom:16px;">🏠 Properties</div>', unsafe_allow_html=True)
+    st.markdown('<div class="page-title">🏠 Properties</div>', unsafe_allow_html=True)
     if not props:
         st.info("No properties yet. Go to Upload / Add to add one.")
         return
+    st.markdown(_SPLIT_CSS, unsafe_allow_html=True)
 
-    search = st.text_input("🔍 Search address or nickname", "")
-    rows = []
+    col_f, col_l = st.columns([1, 3.2])
+    selected_rows = []
+    filtered = []
+
+    with col_f:
+        st.markdown('<div class="section-hdr">Filters</div>', unsafe_allow_html=True)
+        all_cities = sorted(set(p.get("city","") for p in props if p.get("city")))
+        all_types  = sorted(set(p.get("type","") for p in props if p.get("type")))
+        city_f  = st.multiselect("City", all_cities, key="pp_c")
+        type_f  = st.multiselect("Type", all_types, key="pp_t")
+        miss_f  = st.checkbox("⚠️ Only missing units", key="pp_m")
+        srch    = st.text_input("s", placeholder="🔍  address, ID, nickname…", key="pp_q", label_visibility="collapsed")
+        st.markdown("---")
+        confirmed_units = sum((p.get("units") or 0) for p in props if isinstance(p.get("units"),int) and p.get("units") not in (0,None))
+        st.metric("Properties", len(props))
+        st.metric("Units confirmed", confirmed_units)
+        missing_cnt = sum(1 for p in props if not p.get("units") or p.get("units") in (0,None,"Not Found"))
+        if missing_cnt:
+            st.warning(f"{missing_cnt} props missing units")
+
     for p in props:
-        if search and search.lower() not in (str(p.get("address",""))+str(p.get("nickname",""))).lower():
-            continue
-        rows.append({"ID":p.get("prop_id",""),"Nickname":p.get("nickname",""),
-            "Address":p.get("address",""),"City":p.get("city",""),"Type":p.get("type",""),
-            "Built":p.get("year_built",""),"Units":p.get("units","Not Found"),
-            "Sq Ft":p.get("sqft","Not Found"),"Owner":p.get("owner",""),
-            "Agent":p.get("agent",""),"Notes":(p.get("notes") or "")[:80]})
+        if city_f and p.get("city","") not in city_f: continue
+        if type_f and p.get("type","") not in type_f: continue
+        if miss_f and p.get("units") not in (None,0,"Not Found") and p.get("units"): continue
+        if srch and srch.lower() not in (str(p.get("address",""))+str(p.get("nickname",""))+str(p.get("prop_id",""))).lower(): continue
+        filtered.append(p)
 
-    if not rows:
-        st.warning("No properties match your search.")
-        return
+    with col_l:
+        st.markdown(f'<div style="font-size:12px;color:#8896B3;margin-bottom:6px">{len(filtered)} properties</div>', unsafe_allow_html=True)
+        if not filtered:
+            st.warning("No properties match your filters.")
+        else:
+            rows = []
+            for p in filtered:
+                units = p.get("units"); sqft = p.get("sqft")
+                u_ok = units and units not in (0,"Not Found")
+                rows.append({
+                    "": "⚠️" if not u_ok else "✓",
+                    "ID": p.get("prop_id",""),
+                    "Nickname / Address": p.get("nickname") or p.get("address",""),
+                    "City": p.get("city",""),
+                    "Type": (p.get("type") or "")[:22],
+                    "Units": str(units) if u_ok else "Missing",
+                    "Sq Ft": f"{sqft:,}" if isinstance(sqft,int) and sqft else "Missing",
+                    "Owner": p.get("owner",""),
+                })
+            df = pd.DataFrame(rows)
+            ev = st.dataframe(df, use_container_width=True, hide_index=True,
+                on_select="rerun", selection_mode="single-row", height=420,
+                column_config={
+                    "": st.column_config.TextColumn(width=24),
+                    "ID": st.column_config.TextColumn(width=60),
+                    "Nickname / Address": st.column_config.TextColumn(),
+                    "City": st.column_config.TextColumn(width=90),
+                    "Type": st.column_config.TextColumn(width=130),
+                    "Units": st.column_config.TextColumn(width=60),
+                    "Sq Ft": st.column_config.TextColumn(width=80),
+                    "Owner": st.column_config.TextColumn(),
+                })
+            selected_rows = ev.selection.rows
 
-    df = pd.DataFrame(rows)
-    def flag_missing(val):
-        if val in ("Not Found", None, 0): return "background-color:#fef9c3;color:#92400e"
-        return ""
-    styled = df.style.map(flag_missing, subset=["Units","Sq Ft"])
-    st.dataframe(styled, use_container_width=True, hide_index=True, height=560)
-    st.caption(f"{len(rows)} properties · Yellow = data needs verification")
-    st.markdown("---")
-    c1,c2,c3 = st.columns(3)
-    total_units = sum((p.get("units") or 0) for p in props if isinstance(p.get("units"),int))
-    total_sqft  = sum((p.get("sqft") or 0) for p in props if isinstance(p.get("sqft"),int))
-    c1.metric("Total Properties", len(props))
-    c2.metric("Total Units (confirmed)", total_units)
-    c3.metric("Total Sq Ft (confirmed)", f"{total_sqft:,}")
+    # ── Detail panel ─────────────────────────────────────────────────
+    if selected_rows and filtered:
+        p = filtered[selected_rows[0]]
+        units = p.get("units"); sqft = p.get("sqft")
+        u_ok = units and units not in (0,"Not Found")
+        s_ok = isinstance(sqft,int) and sqft
+        notes = p.get("notes") or ""
+        missing = not u_ok or not s_ok
+        st.markdown(f"""
+        <div class="det-card">
+          <div class="det-hdr">
+            <div>
+              <div class="det-title">{p.get("nickname") or p.get("address","—")}</div>
+              <div class="det-meta">{p.get("prop_id","")} &nbsp;·&nbsp; {p.get("address","")} &nbsp;·&nbsp; {p.get("city","")} {p.get("state","")} {p.get("zip","")}</div>
+            </div>
+            <span class="status-pill pill-active">{p.get("type","Property")}</span>
+          </div>
+          <div class="det-grid">
+            <div class="det-field"><div class="dk">Units</div><div class="dv" style="color:{'#EF4444' if not u_ok else '#1A1F3C'}">{units if u_ok else '⚠️ Missing'}</div></div>
+            <div class="det-field"><div class="dk">Sq Ft</div><div class="dv" style="color:{'#EF4444' if not s_ok else '#1A1F3C'}">{f"{sqft:,}" if s_ok else "⚠️ Missing"}</div></div>
+            <div class="det-field"><div class="dk">Year Built</div><div class="dv">{p.get("year_built","—")}</div></div>
+            <div class="det-field"><div class="dk">Owner</div><div class="dv">{p.get("owner","—")}</div></div>
+            <div class="det-field"><div class="dk">Mortgagee</div><div class="dv">{p.get("mortgagee","—") or "—"}</div></div>
+            <div class="det-field"><div class="dk">Agent</div><div class="dv">{p.get("agent","—") or "—"}</div></div>
+          </div>
+          {'<div class="det-note red">⚠️ Incomplete — units or sq ft missing. Update via Upload / Add.</div>' if missing else '<div class="det-note green">✅ All key data present.</div>'}
+          {f'<div class="det-note" style="margin-top:6px">📝 {notes}</div>' if notes else ''}
+        </div>
+        """, unsafe_allow_html=True)
+    elif filtered:
+        st.markdown('<div class="sel-hint">← Click any row to see full property details here</div>', unsafe_allow_html=True)
 
 
 # ══════════════════════════════════════════════════════════════════════
@@ -464,93 +561,230 @@ def page_properties(data):
 # ══════════════════════════════════════════════════════════════════════
 def page_policies(data):
     policies = data.get("policies",[])
-    st.markdown('<div style="font-size:22px;font-weight:700;color:#1A1F3C;margin-bottom:16px;">📋 Policies</div>', unsafe_allow_html=True)
+    st.markdown('<div class="page-title">📋 Policies</div>', unsafe_allow_html=True)
     if not policies:
         st.info("No policies yet. Upload a PDF to get started.")
         return
+    st.markdown(_SPLIT_CSS, unsafe_allow_html=True)
 
-    col1,col2,col3 = st.columns([1,1,2])
-    with col1:
-        status_filter = st.multiselect("Status", ["Active","Quote","Expired"], default=["Active","Quote"])
-    with col2:
-        type_filter = st.selectbox("Type", ["All","Commercial","Residential","Umbrella"])
-    with col3:
-        search = st.text_input("Search policy # or carrier", "")
+    col_f, col_l = st.columns([1, 3.2])
+    selected_rows = []
+    filtered = []
 
-    rows=[]
+    with col_f:
+        st.markdown('<div class="section-hdr">Filters</div>', unsafe_allow_html=True)
+        sf   = st.multiselect("Status", ["Active","Quote","Expired"], default=["Active","Quote"], key="plf_s")
+        tf   = st.radio("Type", ["All","Commercial","Residential","Umbrella"], key="plf_t")
+        uf   = st.radio("Urgency", ["All","< 90 days","< 30 days"], key="plf_u")
+        srch = st.text_input("s", placeholder="🔍  carrier, policy #…", key="plf_q", label_visibility="collapsed")
+        st.markdown("---")
+        active_prem = sum((p.get("premium") or 0) for p in policies if p.get("status","Active")=="Active")
+        st.metric("Total Policies", len(policies))
+        st.metric("Active Premium", f"${active_prem:,.0f}")
+
     for p in policies:
-        status=p.get("status","Active")
-        if status_filter and status not in status_filter: continue
-        ptype=(p.get("policy_type") or "").lower()
-        if type_filter=="Commercial" and any(x in ptype for x in ["ho-","homeown","condo","cea"]): continue
-        if type_filter=="Residential" and not any(x in ptype for x in ["ho-","homeown","condo","cea"]): continue
-        if type_filter=="Umbrella" and "umbrella" not in ptype and "excess" not in ptype: continue
-        if search and search.lower() not in (p.get("policy_number","")+p.get("carrier","")).lower(): continue
-        exp=parse_date(p.get("expiration_date"))
-        d = days_to(p.get("expiration_date"))
-        rows.append({"Prop ID":p.get("prop_id","MULTI"),"Policy #":p.get("policy_number",""),
-            "Status":status,"Carrier":p.get("carrier",""),"Type":p.get("policy_type",""),
-            "Effective":parse_date(p.get("effective_date")).strftime("%m/%d/%Y") if parse_date(p.get("effective_date")) else "—",
-            "Expires":exp.strftime("%m/%d/%Y") if exp else "—",
-            "Days Left":max(0,d) if d is not None else "—",
-            "Premium":p.get("premium"),"Bldg Limit":p.get("building_limit"),
-            "AOP Ded":p.get("ded_aop",""),"Notes":(p.get("notes") or "")[:80]})
+        s  = p.get("status","Active")
+        if sf and s not in sf: continue
+        pt = (p.get("policy_type") or "").lower()
+        if tf == "Commercial" and any(x in pt for x in ["ho-","homeown","condo","cea","earthquake"]): continue
+        if tf == "Residential" and not any(x in pt for x in ["ho-","homeown","condo","cea","earthquake"]): continue
+        if tf == "Umbrella" and "umbrella" not in pt and "excess" not in pt: continue
+        d  = days_to(p.get("expiration_date"))
+        if uf == "< 90 days" and (d is None or d >= 90): continue
+        if uf == "< 30 days" and (d is None or d >= 30): continue
+        if srch and srch.lower() not in (p.get("policy_number","") + p.get("carrier","") + (p.get("prop_id") or "")).lower(): continue
+        filtered.append(p)
 
-    if not rows:
-        st.warning("No policies match your filters.")
-        return
+    with col_l:
+        st.markdown(f'<div style="font-size:12px;color:#8896B3;margin-bottom:6px">{len(filtered)} of {len(policies)} policies</div>', unsafe_allow_html=True)
+        if not filtered:
+            st.warning("No policies match your filters.")
+        else:
+            rows = []
+            for p in filtered:
+                d   = days_to(p.get("expiration_date"))
+                exp = parse_date(p.get("expiration_date"))
+                s   = p.get("status","Active")
+                rows.append({
+                    "": {"Active":"●","Quote":"◉","Expired":"○"}.get(s,"●"),
+                    "Carrier": p.get("carrier","—"),
+                    "Policy #": p.get("policy_number","—"),
+                    "Type": (p.get("policy_type") or "—")[:26],
+                    "Prop": p.get("prop_id","") or "MULTI",
+                    "Expires": exp.strftime("%m/%d/%y") if exp else "—",
+                    "Days": d if d is not None else -9999,
+                    "Premium ($)": p.get("premium") or 0,
+                })
+            df = pd.DataFrame(rows)
+            ev = st.dataframe(df, use_container_width=True, hide_index=True,
+                on_select="rerun", selection_mode="single-row", height=420,
+                column_config={
+                    "": st.column_config.TextColumn(width=24),
+                    "Carrier": st.column_config.TextColumn(),
+                    "Policy #": st.column_config.TextColumn(),
+                    "Type": st.column_config.TextColumn(),
+                    "Prop": st.column_config.TextColumn(width=60),
+                    "Expires": st.column_config.TextColumn(width=80),
+                    "Days": st.column_config.NumberColumn(format="%d d", width=60),
+                    "Premium ($)": st.column_config.NumberColumn(format="$%,.0f"),
+                })
+            selected_rows = ev.selection.rows
 
-    df=pd.DataFrame(rows)
-    def style_status(val):
-        return {"Active":"background-color:#e2efda","Quote":"background-color:#fff9c4","Expired":"background-color:#fce4ec"}.get(val,"")
-    def style_days(val):
-        if isinstance(val,int):
-            if val<30: return "color:#ef4444;font-weight:700"
-            if val<90: return "color:#f59e0b;font-weight:600"
-        return ""
-    styled=(df.style.map(style_status,subset=["Status"]).map(style_days,subset=["Days Left"])
-        .format({"Premium":lambda v:f"${v:,.0f}" if v else "—","Bldg Limit":lambda v:f"${v:,.0f}" if v else "—"}))
-    st.dataframe(styled,use_container_width=True,hide_index=True,height=520)
+    # ── Detail panel ─────────────────────────────────────────────────
+    if selected_rows and filtered:
+        p   = filtered[selected_rows[0]]
+        d   = days_to(p.get("expiration_date"))
+        exp = parse_date(p.get("expiration_date"))
+        eff = parse_date(p.get("effective_date"))
+        s   = p.get("status","Active")
+        pill = {"Active":"pill-active","Quote":"pill-quote","Expired":"pill-expired"}.get(s,"pill-active")
+        bldg = p.get("building_limit")
+        prem = p.get("premium") or 0
+        notes = p.get("notes") or ""
+        insp  = p.get("inspection") or ""
+        flag  = "required" in insp.lower()
+        note_html = ""
+        if flag:
+            note_html = f'<div class="det-note red">⚠️ <strong>Inspection required</strong> — {insp}</div>'
+        elif notes:
+            note_html = f'<div class="det-note">📝 {notes}</div>'
 
-    bound=[r for r in rows if r["Status"]=="Active"]
-    if bound:
-        seen=set(); unique=0
-        for p in policies:
-            pno=p.get("policy_number","")
-            if pno not in seen and p.get("status","Active")=="Active":
-                seen.add(pno); unique+=p.get("premium") or 0
-        st.markdown(f"**{len(bound)} active rows** · Unique policy total: **${unique:,.2f}**")
-        st.caption("Multi-property policies appear on multiple rows but premium is counted once.")
+        st.markdown(f"""
+        <div class="det-card">
+          <div class="det-hdr">
+            <div>
+              <div class="det-title">{p.get("carrier","—")}</div>
+              <div class="det-meta">{p.get("policy_number","—")} &nbsp;·&nbsp; Prop: {p.get("prop_id","MULTI") or "MULTI"} &nbsp;·&nbsp; {p.get("agency","") or "No agency listed"}</div>
+            </div>
+            <span class="status-pill {pill}">{s}</span>
+          </div>
+          <div class="det-grid">
+            <div class="det-field"><div class="dk">Policy Type</div><div class="dv">{p.get("policy_type","—")}</div></div>
+            <div class="det-field"><div class="dk">Effective</div><div class="dv">{eff.strftime("%m/%d/%Y") if eff else "—"}</div></div>
+            <div class="det-field"><div class="dk">Expires</div><div class="dv" style="color:{_dc(d)}">{exp.strftime("%m/%d/%Y") if exp else "—"}</div></div>
+            <div class="det-field"><div class="dk">Days</div><div class="dv" style="color:{_dc(d)}">{_dl(d)}</div></div>
+            <div class="det-field"><div class="dk">Premium</div><div class="dv">${prem:,.0f}</div></div>
+            <div class="det-field"><div class="dk">Building Limit</div><div class="dv">{f"${bldg:,.0f}" if bldg else "—"}</div></div>
+            <div class="det-field"><div class="dk">AOP Ded</div><div class="dv">{p.get("ded_aop","—") or "—"}</div></div>
+            <div class="det-field"><div class="dk">Water Ded</div><div class="dv">{p.get("ded_water","—") or "—"}</div></div>
+            <div class="det-field"><div class="dk">Sewer Ded</div><div class="dv">{p.get("ded_sewer","—") or "—"}</div></div>
+            <div class="det-field"><div class="dk">Liability</div><div class="dv">{p.get("liability","—") or "—"}</div></div>
+            <div class="det-field"><div class="dk">Biz Income</div><div class="dv">{p.get("business_income","—") or "—"}</div></div>
+            <div class="det-field"><div class="dk">Habitability</div><div class="dv">{p.get("habitability","—") or "—"}</div></div>
+          </div>
+          {note_html}
+        </div>
+        """, unsafe_allow_html=True)
+    elif filtered:
+        st.markdown('<div class="sel-hint">← Click any row to see the full policy detail here</div>', unsafe_allow_html=True)
 
 
 # ══════════════════════════════════════════════════════════════════════
 # AUTO
 # ══════════════════════════════════════════════════════════════════════
 def page_auto(data):
-    auto=data.get("auto_policies",[])
-    st.markdown('<div style="font-size:22px;font-weight:700;color:#1A1F3C;margin-bottom:16px;">🚗 Auto Insurance</div>', unsafe_allow_html=True)
+    auto = data.get("auto_policies",[])
+    st.markdown('<div class="page-title">🚗 Auto Insurance</div>', unsafe_allow_html=True)
     if not auto:
-        st.info("No auto policies yet.")
+        st.info("No auto policies yet. Go to Upload / Add to add one.")
         return
-    rows=[]
+    st.markdown(_SPLIT_CSS, unsafe_allow_html=True)
+
+    col_f, col_l = st.columns([1, 3.2])
+    selected_rows = []
+    filtered = []
+
+    with col_f:
+        st.markdown('<div class="section-hdr">Filters</div>', unsafe_allow_html=True)
+        all_states = sorted(set(a.get("state","") for a in auto if a.get("state")))
+        state_f = st.multiselect("State", all_states, key="pa_st")
+        uf      = st.radio("Urgency", ["All","< 90 days","< 30 days"], key="pa_u")
+        srch    = st.text_input("s", placeholder="🔍  insured, policy #…", key="pa_q", label_visibility="collapsed")
+        st.markdown("---")
+        total_prem = sum((a.get("premium") or 0) for a in auto)
+        st.metric("Auto Policies", len(auto))
+        st.metric("Total Premium", f"${total_prem:,.0f}")
+
     for a in auto:
-        exp=parse_date(a.get("expiration_date"))
-        d=days_to(a.get("expiration_date"))
-        rows.append({"Policy #":a.get("policy_number",""),"Insured":a.get("insured",""),
-            "Carrier":a.get("carrier",""),"State":a.get("state",""),
-            "Vehicles":a.get("vehicles",""),"Expires":exp.strftime("%m/%d/%Y") if exp else "—",
-            "Days Left":max(0,d) if d is not None else "—","Premium":a.get("premium"),
-            "BI/PD":a.get("bipd",""),"Notes":(a.get("notes") or "")[:80]})
-    df=pd.DataFrame(rows)
-    def sd(val):
-        if isinstance(val,int):
-            if val<30: return "color:#ef4444;font-weight:700"
-            if val<90: return "color:#f59e0b;font-weight:600"
-        return ""
-    styled=df.style.map(sd,subset=["Days Left"]).format({"Premium":lambda v:f"${v:,.2f}" if v else "—"})
-    st.dataframe(styled,use_container_width=True,hide_index=True)
-    total=sum((a.get("premium") or 0) for a in auto)
-    st.markdown(f"**{len(auto)} policies** · Total as issued: **${total:,.2f}**")
+        if state_f and a.get("state","") not in state_f: continue
+        d = days_to(a.get("expiration_date"))
+        if uf == "< 90 days" and (d is None or d >= 90): continue
+        if uf == "< 30 days" and (d is None or d >= 30): continue
+        if srch and srch.lower() not in (a.get("insured","") + a.get("policy_number","") + a.get("carrier","")).lower(): continue
+        filtered.append(a)
+
+    with col_l:
+        st.markdown(f'<div style="font-size:12px;color:#8896B3;margin-bottom:6px">{len(filtered)} of {len(auto)} policies</div>', unsafe_allow_html=True)
+        if not filtered:
+            st.warning("No policies match.")
+        else:
+            rows = []
+            for a in filtered:
+                d   = days_to(a.get("expiration_date"))
+                exp = parse_date(a.get("expiration_date"))
+                rows.append({
+                    "Insured": a.get("insured","—"),
+                    "Carrier": a.get("carrier","—"),
+                    "Policy #": a.get("policy_number","—"),
+                    "State": a.get("state",""),
+                    "Vehicles": (a.get("vehicles") or "")[:38],
+                    "Expires": exp.strftime("%m/%d/%y") if exp else "—",
+                    "Days": d if d is not None else -9999,
+                    "Premium ($)": a.get("premium") or 0,
+                })
+            df = pd.DataFrame(rows)
+            ev = st.dataframe(df, use_container_width=True, hide_index=True,
+                on_select="rerun", selection_mode="single-row", height=340,
+                column_config={
+                    "Insured": st.column_config.TextColumn(),
+                    "Carrier": st.column_config.TextColumn(),
+                    "Policy #": st.column_config.TextColumn(width=100),
+                    "State": st.column_config.TextColumn(width=50),
+                    "Vehicles": st.column_config.TextColumn(),
+                    "Expires": st.column_config.TextColumn(width=80),
+                    "Days": st.column_config.NumberColumn(format="%d d", width=60),
+                    "Premium ($)": st.column_config.NumberColumn(format="$%,.0f"),
+                })
+            selected_rows = ev.selection.rows
+
+    # ── Detail panel ─────────────────────────────────────────────────
+    if selected_rows and filtered:
+        a   = filtered[selected_rows[0]]
+        d   = days_to(a.get("expiration_date"))
+        exp = parse_date(a.get("expiration_date"))
+        eff = parse_date(a.get("effective_date"))
+        notes = a.get("notes") or ""
+        st.markdown(f"""
+        <div class="det-card">
+          <div class="det-hdr">
+            <div>
+              <div class="det-title">{a.get("insured","—")}</div>
+              <div class="det-meta">{a.get("policy_number","—")} &nbsp;·&nbsp; {a.get("carrier","—")} &nbsp;·&nbsp; State: {a.get("state","—")}</div>
+            </div>
+            <span class="status-pill pill-auto">Auto</span>
+          </div>
+          <div class="det-grid">
+            <div class="det-field"><div class="dk">Carrier</div><div class="dv">{a.get("carrier","—")}</div></div>
+            <div class="det-field"><div class="dk">Agency</div><div class="dv">{a.get("agency","—") or "—"}</div></div>
+            <div class="det-field"><div class="dk">Effective</div><div class="dv">{eff.strftime("%m/%d/%Y") if eff else "—"}</div></div>
+            <div class="det-field"><div class="dk">Expires</div><div class="dv" style="color:{_dc(d)}">{exp.strftime("%m/%d/%Y") if exp else "—"}</div></div>
+            <div class="det-field"><div class="dk">Days</div><div class="dv" style="color:{_dc(d)}">{_dl(d)}</div></div>
+            <div class="det-field"><div class="dk">Premium</div><div class="dv">${(a.get("premium") or 0):,.0f}</div></div>
+            <div class="det-field"><div class="dk">BI / PD</div><div class="dv">{a.get("bipd","—") or "—"}</div></div>
+            <div class="det-field"><div class="dk">Comp Ded</div><div class="dv">{a.get("comp_ded","—") or "—"}</div></div>
+            <div class="det-field"><div class="dk">Coll Ded</div><div class="dv">{a.get("coll_ded","—") or "—"}</div></div>
+            <div class="det-field"><div class="dk">UM / UIM</div><div class="dv">{a.get("um_uim","—") or "—"}</div></div>
+            <div class="det-field"><div class="dk">PIP / Med Pay</div><div class="dv">{a.get("pip_medpay","—") or "—"}</div></div>
+          </div>
+          <div class="det-field" style="margin-bottom:10px">
+            <div class="dk">Vehicles</div>
+            <div class="dv" style="font-size:12px;font-weight:400;line-height:1.5">{a.get("vehicles","—") or "—"}</div>
+          </div>
+          {f'<div class="det-note">📝 {notes}</div>' if notes else ''}
+        </div>
+        """, unsafe_allow_html=True)
+    elif filtered:
+        st.markdown('<div class="sel-hint">← Click any row to see full policy details here</div>', unsafe_allow_html=True)
 
 
 # ══════════════════════════════════════════════════════════════════════
